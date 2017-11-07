@@ -41,12 +41,14 @@ Please note, that these chages have no effect on performance.
 
 You may want to use your original gui-config.json file to ease your configuration.
 
-#### To-do
+#### 待解决
 
 1. 解决Windows防火墙报警问题（参考SS解决方法）
 这是Lite版的初衷，可惜个人能力与精力有限，尚未实现
 1. 任务栏图标的上传下载提示（来自SS）
 1. 将日志窗口与服务器连接统计窗口合并，并导入SS的折线图
+
+#### To-do
 
 1. Figure out Windows Firewall warnings.
 1. Tray icon display uploading and downloading status (import from SS).

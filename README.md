@@ -24,6 +24,8 @@ For general users, please use the [Full Version of ShadowsocksR for Windows](htt
 
 （不建议新用户直接使用，建议配合设置好的 gui-config.json 文件使用）
 
+时间有限，能力有限，未能利用现有框架做调整，深表遗憾
+
 #### Changes
 
 Please note, that these chages have no effect on performance.

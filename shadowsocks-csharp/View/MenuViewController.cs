@@ -91,7 +91,7 @@ namespace Shadowsocks.View
                 dpi = (int)graphics.DpiX;
             }
             Configuration config = controller.GetCurrentConfiguration();
-            bool enabled = config.sysProxyMode != (int)ProxyMode.NoModify && config.sysProxyMode != (int)ProxyMode.Direct;
+            bool enabled = (config.sysProxyMode != (int)ProxyMode.NoModify) && (config.sysProxyMode != (int)ProxyMode.Direct);
             bool global = config.sysProxyMode == (int)ProxyMode.Global;
             bool random = config.random;
 
@@ -119,19 +119,27 @@ namespace Shadowsocks.View
                 {
                     icon = Resources.ss24;
                 }
+                // tray icon color
+                // 任务栏图标颜色
                 double mul_a = 1.0, mul_r = 1.0, mul_g = 1.0, mul_b = 1.0;
                 if (!enabled)
                 {
-                    mul_g = 0.4;
+                    // gray
+                    mul_r = 0.75;
+                    mul_g = 0.75;
+                    mul_b = 0.75;
                 }
-                else if (!global)
+                else if (global)
                 {
-                    mul_b = 0.4;
-                    mul_g = 0.8;
+                    // blue
+                    mul_r = 0.1;
+                    mul_g = 0.5;
+                    mul_b = 0.75;
                 }
                 if (!random)
                 {
-                    mul_r = 0.4;
+                    mul_r = 0.5;
+                    mul_b = 0.5;
                 }
 
                 using (Bitmap iconCopy = new Bitmap(icon))
@@ -208,19 +216,19 @@ namespace Shadowsocks.View
                     SeperatorItem = new MenuItem("-"),
                     CreateMenuItem("Edit servers...", new EventHandler(this.Config_Click)),
                     CreateMenuItem("Import servers from file...", new EventHandler(this.Import_Click)),
+                    CreateMenuItem("Import SSR links from clipboard...", new EventHandler(this.CopyAddress_Click)),
                     new MenuItem("-"),
+                    SelectRandomItem = CreateMenuItem("Load balance", new EventHandler(this.SelectRandomItem_Click)),
                     sameHostForSameTargetItem = CreateMenuItem("Same host for same address", new EventHandler(this.SelectSameHostForSameTargetItem_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Server statistic...", new EventHandler(this.ShowServerLogItem_Click)),
                     CreateMenuItem("Disconnect current", new EventHandler(this.DisconnectCurrent_Click)),
                 }),
-                SelectRandomItem = CreateMenuItem("Load balance", new EventHandler(this.SelectRandomItem_Click)),
                 CreateMenuItem("Global settings...", new EventHandler(this.Setting_Click)),
                 CreateMenuItem("Port settings...", new EventHandler(this.ShowPortMapItem_Click)),
-                 new MenuItem("-"),
-                CreateMenuItem("Import SSR links from clipboard...", new EventHandler(this.CopyAddress_Click)),
                 new MenuItem("-"),
+                CreateMenuItem("Server statistic...", new EventHandler(this.ShowServerLogItem_Click)),
                 CreateMenuItem("Show logs...", new EventHandler(this.ShowLogItem_Click)),
+                new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(this.Quit_Click))
             });
         }
@@ -584,24 +592,24 @@ namespace Shadowsocks.View
                 SCA_key |= GetAsyncKeyState(Keys.Menu) < 0 ? 4 : 0;
                 if (SCA_key == 2)
                 {
-                    //left click on tray icon when holding ctrl key
+                    // left click on tray icon when holding Ctrl key
                     ShowServerLogForm();
                 }
                 else if (SCA_key == 1)
                 {
-                    //left click on tray icon when holding shift key
+                    // left click on tray icon when holding Shift key
                     ShowConfigForm(false);
                 }
                 else if (SCA_key == 4)
                 {
-                    //left click on tray icon when holding alt key
+                    // left click on tray icon when holding Alt key
                     ShowPortMapForm();
                     ShowSettingForm();
                 }
                 else
                 {
-                    //左键点击任务栏图标时响应
-                    //left click on tray icon
+                    // 左键点击任务栏图标时响应
+                    // left click on tray icon
                     Configuration config = controller.GetCurrentConfiguration();
                     if (config.sysProxyMode == (int)ProxyMode.Pac)
                     {

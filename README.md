@@ -13,14 +13,14 @@ For general users, please use the [Full Version of ShadowsocksR for Windows](htt
 
 请注意，这些改动对程序性能没有任何提升，仅仅是减少了功能：
 
-1.裁剪了二维码扫描功能
-1.裁剪了自动更新功能
-1.裁剪了服务器订阅功能
-1.裁剪了客户端密码功能
-1.裁剪了自动运行功能
-1.更换图标为SS蓝色小飞机
-1.单击小飞机图标可以切换全局／PAC（名单过滤）两种模式，其它情况不受影响
-1.目标框架为.NET Framework 4.7
+1. 裁剪了二维码扫描功能
+1. 裁剪了自动更新功能
+1. 裁剪了服务器订阅功能
+1. 裁剪了客户端密码功能
+1. 裁剪了自动运行功能
+1. 更换图标为SS蓝色小飞机
+1. 单击小飞机图标可以切换全局／PAC（名单过滤）两种模式，其它情况不受影响
+1. 目标框架为.NET Framework 4.7
 
 （不建议新用户直接使用，建议配合设置好的 gui-config.json 文件使用）
 
@@ -30,27 +30,27 @@ For general users, please use the [Full Version of ShadowsocksR for Windows](htt
 
 Please note, that these chages have no effect on performance.
 
-1.Trimmed QRCode functions.
-1.Trimmed Auto-Updater.
-1.Trimmed Server Subscriber.
-1.Trimmed Client-configuration-file password-encryptor.
-1.Trimmed AutoRun on boot.
-1.Legacy-style icons.
-1.Click on tray-icon now swap between PAC / Global mode (does not affect Direct mode).
-1.Build target .NET Framework 4.7.
+1. Trimmed QRCode functions.
+1. Trimmed Auto-Updater.
+1. Trimmed Server Subscriber.
+1. Trimmed Client-configuration-file password-encryptor.
+1. Trimmed AutoRun on boot.
+1. Legacy-style icons.
+1. Click on tray-icon now swap between PAC / Global mode (does not affect Direct mode).
+1. Build target .NET Framework 4.7.
 
 You may want to use your original gui-config.json file to ease your configuration.
 
 #### To-do
 
-1.解决Windows防火墙报警问题（参考SS解决方法）
+1. 解决Windows防火墙报警问题（参考SS解决方法）
 这是Lite版的初衷，可惜个人能力与精力有限，尚未实现
-1.任务栏图标的上传下载提示（来自SS）
-1.将日志窗口与服务器连接统计窗口合并，并导入SS的折线图
+1. 任务栏图标的上传下载提示（来自SS）
+1. 将日志窗口与服务器连接统计窗口合并，并导入SS的折线图
 
-1.Figure out Windows Firewall warnings.
-1.Tray icon display uploading and downloading status (import from SS).
-1.Combine Log and ServerLog forms (import from SS).
+1. Figure out Windows Firewall warnings.
+1. Tray icon display uploading and downloading status (import from SS).
+1. Combine Log and ServerLog forms (import from SS).
 
 #### Download
 

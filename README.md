@@ -5,10 +5,9 @@ ShadowsocksR for Windows (Lite)
 - **Lite版没有添加任何新功能、算法**
 - 对于一般用户，请使用[完整的 ShadowsocksR][SSR]
 
-
-- This is just a trimmed version of ShadowsocksR for Windows. It is intended for using in specific circumstances, other than Commanand-Line.
-- **It has nothing to do with new features or algorithms.**
-- For general users, please use the [Full Version of ShadowsocksR for Windows][SSR].
+* This is just a trimmed version of ShadowsocksR for Windows. It is intended for using in specific circumstances, other than Commanand-Line.
+* **It has nothing to do with new features or algorithms.**
+* For general users, please use the [Full Version of ShadowsocksR for Windows][SSR].
 
 #### 改动
 
@@ -71,14 +70,11 @@ Shame on me that I can not re-invent wheels, grrrr...
 
 - You will need to download and install [7-Zip] in order 
 to extract the ShadowsocksR archive.
-
 - _Optionally_, right-click on the downloaded 7z file and select 
 **CRC SHA** > **SHA-256**. Verify that the SHA-256 checksum displayed 
 matches the expected checksum which was shown on the releases page.
-
 - Right-click on the downloaded 7z file and do **7-Zip** > **Extract Here** 
 or extract to a new folder.
-
 - You may want to [download latest .NET Framework from Microsoft.com][NDP]
 if you encountered RUNTIME ERROR.
 
@@ -109,7 +105,7 @@ GPLv3
 
 BreakWa11 has the copyright of ShadowsocksR, which was forked from Shadowsocks by clowwindy.
 
-[SSR]:    https://github.com/shadowsocksrr/shadowsocksr-csharp/releases
-[SS] :    https://github.com/shadowsocks/shadowsocks-windows/
-[7-Zip]:  http://www.7-zip.org/
-[NDP]:    https://www.microsoft.com/net/download/thank-you/net471
+[SSR]:   https://github.com/shadowsocksrr/shadowsocksr-csharp/releases
+[SS]:    https://github.com/shadowsocks/shadowsocks-windows/
+[7-Zip]: http://www.7-zip.org/
+[NDP]:   https://www.microsoft.com/net/download/thank-you/net471

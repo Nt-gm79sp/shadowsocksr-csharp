@@ -66,7 +66,7 @@ namespace Shadowsocks.View
         {
             this.Text = I18N.GetString("Global Settings") + "("
                 + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString()
-                + I18N.GetString(" Version") + UpdateChecker.FullVersion
+                + I18N.GetString(" Version") + Application.ProductVersion
                 + ")";
 
             ListenGroup.Text = I18N.GetString(ListenGroup.Text);
@@ -76,7 +76,6 @@ namespace Shadowsocks.View
             TTLLabel.Text = I18N.GetString("TTL");
             labelTimeout.Text = I18N.GetString(labelTimeout.Text);
 
-            checkAutoStartup.Text = I18N.GetString(checkAutoStartup.Text);
             checkRandom.Text = I18N.GetString(checkRandom.Text);
             CheckAutoBan.Text = I18N.GetString("AutoBan");
 
@@ -129,10 +128,6 @@ namespace Shadowsocks.View
                 _modifiedConfiguration.localPort = localPort;
                 _modifiedConfiguration.reconnectTimes = NumReconnect.Text.Length == 0 ? 0 : int.Parse(NumReconnect.Text);
 
-                if (checkAutoStartup.Checked != AutoStartup.Check() && !AutoStartup.Set(checkAutoStartup.Checked))
-                {
-                    MessageBox.Show(I18N.GetString("Failed to update registry"));
-                }
                 _modifiedConfiguration.random = checkRandom.Checked;
                 _modifiedConfiguration.randomAlgorithm = RandomComboBox.SelectedIndex;
                 _modifiedConfiguration.randomInGroup = checkBalanceInGroup.Checked;
@@ -167,7 +162,6 @@ namespace Shadowsocks.View
             NumProxyPort.Value = _modifiedConfiguration.localPort;
             NumReconnect.Value = _modifiedConfiguration.reconnectTimes;
 
-            checkAutoStartup.Checked = AutoStartup.Check();
             checkRandom.Checked = _modifiedConfiguration.random;
             if (_modifiedConfiguration.randomAlgorithm >= 0 && _modifiedConfiguration.randomAlgorithm < RandomComboBox.Items.Count)
             {

@@ -36,8 +36,6 @@ Update local PAC from Chn Only list=更新PAC为仅通过大陆常见域名（�
 Copy PAC URL=复制 PAC URL
 Edit local PAC file...=编辑本地 PAC 文件...
 Edit user rule for GFWList...=编辑 GFWList 的用户规则...
-Show QRCode...=显示二维码...
-Scan QRCode from screen...=二维码扫描...
 Import SSR links from clipboard...=剪贴板批量导入ssr://链接...
 Port settings...=端口设置...
 Server statistic...=服务器连接统计...
@@ -48,7 +46,6 @@ Check update=检查更新
 Show logs...=显示日志...
 Open wiki...=打开Wiki文档...
 Feedback...=问题反馈...
-Gen custom QRCode...=自定义生成二维码
 Reset password...=设置客户端密码...
 About...=关于...
 Donate...=捐助...
@@ -163,24 +160,11 @@ Show in &Explorer=在资源管理器中显示(&E)
 &Always on top=置于顶层(&A)
 Log Viewer=日志查看器
 
-# QRCode Form
-
-QRCode=二维码
-
 # PAC Url Form
 
 Edit Online PAC URL=编辑在线 PAC 网址
 Edit Online PAC URL...=编辑在线 PAC 网址...
 Please input PAC Url=请输入 PAC 网址
-
-# InputPassword Form
-
-InputPassword=输入密码
-Parse gui-config.json error, maybe require password to decrypt=解析 gui-config.json 出错, 可能需要密码解密
-
-# ResetPassword Form
-
-ResetPassword=重置密码
 
 # PortSettingsForm Form
 
@@ -200,13 +184,6 @@ Proxy With Rule=规则代理
 #Cancel=
 #&Add=
 #&Delete=
-
-# SubscribeForm Form
-
-Subscribe Settings=订阅设置
-URL=网址
-Group name=组名
-Auto update=自动更新
 
 # Messages
 
@@ -228,11 +205,9 @@ Failed to update PAC file =更新 PAC 文件失败
 PAC updated=更新 PAC 成功
 Domain white list list updated=更新域名白名单成功
 No updates found. Please report to GFWList if you have problems with it.=未发现更新。如有问题请提交给 GFWList。
-No QRCode found. Try to zoom in or move it to the center of the screen.=未发现二维码，尝试把它放大或移动到靠近屏幕中间的位置
 ShadowsocksR is already running.=ShadowsocksR 已经在运行。
 Find Shadowsocks icon in your notify tray.=请在任务栏里寻找 ShadowsocksR 图标。
 If you want to start multiple Shadowsocks, make a copy in another directory.=如果想启动多份，可以另外复制一份到别的目录。
-Failed to decode QRCode=无法解析二维码
 Failed to update registry=无法修改注册表
 System Proxy On: =系统代理已启用：
 Running: Port {0}=正在运行：端口 {0}

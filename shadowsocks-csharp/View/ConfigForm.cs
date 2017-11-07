@@ -10,7 +10,6 @@ using Microsoft.Win32;
 using Shadowsocks.Controller;
 using Shadowsocks.Model;
 using Shadowsocks.Properties;
-using ZXing.QrCode.Internal;
 using Shadowsocks.Encryption;
 
 namespace Shadowsocks.View
@@ -18,7 +17,6 @@ namespace Shadowsocks.View
     public partial class ConfigForm : Form
     {
         private ShadowsocksController controller;
-        private UpdateChecker updateChecker;
 
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
@@ -29,7 +27,7 @@ namespace Shadowsocks.View
 
         private string _SelectedID = null;
 
-        public ConfigForm(ShadowsocksController controller, UpdateChecker updateChecker, int focusIndex)
+        public ConfigForm(ShadowsocksController controller, int focusIndex)
         {
             this.Font = System.Drawing.SystemFonts.MessageBoxFont;
             InitializeComponent();
@@ -42,9 +40,6 @@ namespace Shadowsocks.View
 
             this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             this.controller = controller;
-            this.updateChecker = updateChecker;
-            if (updateChecker.LatestVersionURL == null)
-                LinkUpdate.Visible = false;
 
             foreach (string name in EncryptorFactory.GetEncryptor())
             {
@@ -66,9 +61,6 @@ namespace Shadowsocks.View
 
                 focusIndex = index;
             }
-
-            if (_modifiedConfiguration.isHideTips)
-                PictureQRcode.Visible = false;
 
             int dpi_mul = Util.Utils.GetDpiMul();
             //ServersListBox.Height = ServersListBox.Height * 4 / dpi_mul;
@@ -106,9 +98,6 @@ namespace Shadowsocks.View
             //MyCancelButton.Width = MyCancelButton.Width * dpi_mul / 4;
             MyCancelButton.Height = MyCancelButton.Height * dpi_mul / 4;
 
-            DrawLogo(350 * dpi_mul / 4);
-            //DrawLogo(350);
-
             ShowWindow();
 
             if (focusIndex >= 0 && focusIndex < _modifiedConfiguration.configs.Count)
@@ -143,7 +132,7 @@ namespace Shadowsocks.View
         {
             this.Text = I18N.GetString("Edit Servers") + "("
                 + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString()
-                + I18N.GetString(" Version") + UpdateChecker.FullVersion
+                + I18N.GetString(" Version") + Application.ProductVersion
                 + ")";
 
             AddButton.Text = I18N.GetString("&Add");
@@ -181,8 +170,6 @@ namespace Shadowsocks.View
 
             OKButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");
-            LinkUpdate.MaximumSize = new Size(ServersListBox.Width, ServersListBox.Height);
-            LinkUpdate.Text = String.Format(I18N.GetString("New version {0} {1} available"), UpdateChecker.Name, updateChecker.LatestVersionNumber);
         }
 
         private void controller_ConfigChanged(object sender, EventArgs e)
@@ -254,64 +241,6 @@ namespace Shadowsocks.View
             return -1; // ERROR
         }
 
-        private void DrawLogo(int width)
-        {
-            Bitmap drawArea = new Bitmap(width, width);
-            using (Graphics g = Graphics.FromImage(drawArea))
-            {
-                g.Clear(Color.White);
-                Bitmap ngnl = Resources.ngnl;
-                g.DrawImage(ngnl, new Rectangle(0, 0, width, width));
-                if (!_modifiedConfiguration.isHideTips)
-                    g.DrawString("Click the 'Link' text box", new Font("Arial", 14), new SolidBrush(Color.Black), new RectangleF(0, 0, 300, 300));
-            }
-            PictureQRcode.Image = drawArea;
-        }
-
-        private void GenQR(string ssconfig)
-        {
-            int dpi_mul = Util.Utils.GetDpiMul();
-            int width = 350 * dpi_mul / 4;
-            if (TextLink.Focused)
-            {
-                string qrText = ssconfig;
-                QRCode code = ZXing.QrCode.Internal.Encoder.encode(qrText, ErrorCorrectionLevel.M);
-                ByteMatrix m = code.Matrix;
-                int blockSize = Math.Max(width / (m.Width + 2), 1);
-                Bitmap drawArea = new Bitmap(((m.Width + 2) * blockSize), ((m.Height + 2) * blockSize));
-                using (Graphics g = Graphics.FromImage(drawArea))
-                {
-                    g.Clear(Color.White);
-                    using (Brush b = new SolidBrush(Color.Black))
-                    {
-                        for (int row = 0; row < m.Width; row++)
-                        {
-                            for (int col = 0; col < m.Height; col++)
-                            {
-                                if (m[row, col] != 0)
-                                {
-                                    g.FillRectangle(b, blockSize * (row + 1), blockSize * (col + 1),
-                                        blockSize, blockSize);
-                                }
-                            }
-                        }
-                    }
-                    Bitmap ngnl = Resources.ngnl;
-                    int div = 13, div_l = 5, div_r = 8;
-                    int l = (m.Width * div_l + div - 1) / div * blockSize, r = (m.Width * div_r + div - 1) / div * blockSize;
-                    g.DrawImage(ngnl, new Rectangle(l + blockSize, l + blockSize, r - l, r - l));
-                }
-                PictureQRcode.Image = drawArea;
-                PictureQRcode.Visible = true;
-                _modifiedConfiguration.isHideTips = true;
-            }
-            else
-            {
-                //PictureQRcode.Visible = false;
-                DrawLogo(PictureQRcode.Width);
-            }
-        }
-
         private void LoadSelectedServer()
         {
             if (ServersListBox.SelectedIndex >= 0 && ServersListBox.SelectedIndex < _modifiedConfiguration.configs.Count)
@@ -370,7 +299,6 @@ namespace Shadowsocks.View
                 Update_SSR_controls_Visable();
                 UpdateObfsTextbox();
                 TextLink.SelectAll();
-                GenQR(TextLink.Text);
             }
             else
             {
@@ -683,11 +611,6 @@ namespace Shadowsocks.View
             {
                 ((TextBox)sender).SelectAll();
             }
-        }
-
-        private void LinkUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(updateChecker.LatestVersionURL);
         }
 
         private void PasswordLabel_CheckedChanged(object sender, EventArgs e)

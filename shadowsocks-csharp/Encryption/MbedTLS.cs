@@ -58,7 +58,7 @@ namespace Shadowsocks.Encryption
             public byte[] ComputeHash(byte[] buffer, int offset, int count)
             {
                 byte[] output = new byte[64];
-                ss_hmac_ex(MBEDTLS_MD_SHA1, key, key.Length, buffer,offset, count, output);
+                ss_hmac_ex(MBEDTLS_MD_SHA1, key, key.Length, buffer, offset, count, output);
                 return output;
             }
         }
@@ -74,14 +74,7 @@ namespace Shadowsocks.Encryption
             string dllPath = Path.Combine(runningPath, "libsscrypto.dll");
             try
             {
-                if (IntPtr.Size == 4)
-                {
-                    FileManager.UncompressFile(dllPath, Resources.libsscrypto_dll);
-                }
-                else
-                {
-                    FileManager.UncompressFile(dllPath, Resources.libsscrypto64_dll);
-                }
+                FileManager.UncompressFile(dllPath, Resources.libsscrypto64_dll);
             }
             catch (IOException)
             {

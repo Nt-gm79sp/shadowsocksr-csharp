@@ -39,10 +39,6 @@ namespace Shadowsocks.Controller
                 {
                     Init(Resources.cn);
                 }
-                else
-                {
-                    Init(Resources.zh_tw);
-                }
             }
         }
 

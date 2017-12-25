@@ -17,14 +17,7 @@ namespace Shadowsocks.Encryption
             string dllPath = Path.Combine(Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp"), "libsscrypto.dll");
             try
             {
-                if (IntPtr.Size == 4)
-                {
-                    FileManager.UncompressFile(dllPath, Resources.libsscrypto_dll);
-                }
-                else
-                {
-                    FileManager.UncompressFile(dllPath, Resources.libsscrypto64_dll);
-                }
+                FileManager.UncompressFile(dllPath, Resources.libsscrypto64_dll);
                 LoadLibrary(dllPath);
             }
             catch (IOException)

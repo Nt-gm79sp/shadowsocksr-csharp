@@ -229,36 +229,5 @@ namespace Shadowsocks.Properties {
             }
         }
         
-        /// <summary>
-        ///   查找类似 # translation for Traditional Chinese
-        ///
-        ///Shadowsocks=Shadowsocks
-        ///
-        ///# Menu items
-        ///
-        ///Mode=系統代理模式
-        ///No modify system proxy=保持當前狀態不修改
-        ///Disable system proxy=直連模式
-        ///PAC=PAC 模式
-        ///Global=全局模式
-        ///Proxy rule=代理規則
-        ///Bypass LAN=繞過區域網路
-        ///Bypass LAN &amp;&amp; China=繞過區域網路和大陸
-        ///Bypass LAN &amp;&amp; not China=繞過區域網路和非大陸
-        ///User custom=用戶自定義
-        ///Disable bypass=全局
-        ///Servers=伺服器
-        ///Edit servers...=編輯伺服器...
-        ///Import servers from file...=從文件導入伺服器...
-        ///Servers Subscribe=伺服器訂閱
-        ///Subscribe setting...=SSR伺服器訂閱設置...
-        ///Update subscribe SSR node=更新SSR伺服器訂閱
-        ///Update su [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string zh_tw {
-            get {
-                return ResourceManager.GetString("zh_tw", resourceCulture);
-            }
-        }
     }
 }

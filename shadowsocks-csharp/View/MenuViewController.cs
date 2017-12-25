@@ -91,8 +91,10 @@ namespace Shadowsocks.View
                 dpi = (int)graphics.DpiX;
             }
             Configuration config = controller.GetCurrentConfiguration();
-            bool enabled = (config.sysProxyMode != (int)ProxyMode.NoModify) && (config.sysProxyMode != (int)ProxyMode.Direct);
+            bool enabled = (config.sysProxyMode != (int)ProxyMode.NoModify)
+                        && (config.sysProxyMode != (int)ProxyMode.Direct);
             bool global = config.sysProxyMode == (int)ProxyMode.Global;
+            bool proxyGlobal = config.proxyRuleMode == (int)ProxyRuleMode.Disable;
             bool random = config.random;
 
             try
@@ -135,6 +137,10 @@ namespace Shadowsocks.View
                     mul_r = 0.1;
                     mul_g = 0.5;
                     mul_b = 0.75;
+                }
+                if (!proxyGlobal)
+                {
+                    mul_g = (mul_g * 1.25) % 1.0;
                 }
                 if (!random)
                 {
@@ -609,7 +615,7 @@ namespace Shadowsocks.View
                 else
                 {
                     // 左键点击任务栏图标时响应
-                    // left click on tray icon
+                    // LMB click on tray icon
                     Configuration config = controller.GetCurrentConfiguration();
                     if (config.sysProxyMode == (int)ProxyMode.Pac)
                     {
@@ -625,9 +631,19 @@ namespace Shadowsocks.View
                     }
                 }
             }
+            // 中键点击任务栏图标时响应
+            // MMB click on tray icon
             else if (e.Button == MouseButtons.Middle)
             {
-                ShowServerLogForm();
+                Configuration config = controller.GetCurrentConfiguration();
+                if (config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina)
+                {
+                    controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
+                }
+                else if (config.proxyRuleMode == (int)ProxyRuleMode.Disable)
+                {
+                    controller.ToggleRuleMode((int)ProxyRuleMode.BypassLanAndChina);
+                }
             }
         }
 

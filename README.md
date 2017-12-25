@@ -62,19 +62,18 @@ Shame on me that I can not re-invent wheels, grrrr...
 
 #### 下载
 
-- 使用 [7-Zip] 解压
-- 建议进行 SHA-256 文件指纹校验，方法：安装 [7-zip] 后，右键点击文件 > **CRC SHA** > **SHA-256**
+- 解压后运行 ShadowsocksR.exe
+- 建议进行 SHA-256 文件指纹校验，方法：
+  - 如已安装 [7-zip] ：右键点击文件 > **CRC SHA** > **SHA-256**
+  - 或者：使用 [File Hasher WPF][Hasher]
 - 如果程序不能运行，需安装最新的 [.NET Framework][NDP]
 
 #### Download
 
-- You will need to download and install [7-Zip] in order 
-to extract the ShadowsocksR archive.
-- _Optionally_, right-click on the downloaded 7z file and select 
+- Unzip and run ShadowsocksR.exe.
+- _Optionally_, right-click on the downloaded zip file and select 
 **CRC SHA** > **SHA-256**. Verify that the SHA-256 checksum displayed 
 matches the expected checksum which was shown on the releases page.
-- Right-click on the downloaded 7z file and do **7-Zip** > **Extract Here** 
-or extract to a new folder.
 - You may want to [download latest .NET Framework from Microsoft.com][NDP]
 if you encountered RUNTIME ERROR.
 
@@ -109,3 +108,4 @@ BreakWa11 has the copyright of ShadowsocksR, which was forked from Shadowsocks b
 [SS]:    https://github.com/shadowsocks/shadowsocks-windows/
 [7-Zip]: http://www.7-zip.org/
 [NDP]:   https://www.microsoft.com/net/download/thank-you/net471
+[Hasher]: https://github.com/Nt-gm79sp/FileHasherWPF/releases

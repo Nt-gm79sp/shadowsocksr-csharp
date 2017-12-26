@@ -130,9 +130,7 @@ namespace Shadowsocks.Model
         public bool sameHostForSameTarget;
 
         public int keepVisitTime;
-
-        public bool isHideTips;
-
+        
         public Dictionary<string, string> token = new Dictionary<string, string>();
         public Dictionary<string, PortMapConfig> portMap = new Dictionary<string, PortMapConfig>();
 
@@ -431,7 +429,6 @@ namespace Shadowsocks.Model
             autoBan = config.autoBan;
             sameHostForSameTarget = config.sameHostForSameTarget;
             keepVisitTime = config.keepVisitTime;
-            isHideTips = config.isHideTips;
         }
 
         public void FixConfiguration()

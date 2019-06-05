@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -56,9 +57,7 @@ namespace Shadowsocks
                 }
 #endif
                 Directory.SetCurrentDirectory(Application.StartupPath);
-                //#if !DEBUG
-                Logging.OpenLogFile();
-                //#endif
+
 #if !_CONSOLE
                 int try_times = 0;
                 while (Configuration.Load() == null)
@@ -74,14 +73,31 @@ namespace Shadowsocks
                     }
                     try_times += 1;
                 }
+                if (try_times > 0)
+                    Logging.save_to_file = false;
 #endif
+
                 _controller = new ShadowsocksController();
                 HostMap.Instance().LoadHostFile();
+
+                // Logging
+                Configuration cfg = _controller.GetConfiguration();
+                Logging.save_to_file = cfg.logEnable;
+
+                //#if !DEBUG
+                Logging.OpenLogFile();
+                //#endif
+
+#if _DOTNET_4_0
+                // Enable Modern TLS when .NET 4.5+ installed.
+                if (Util.EnvCheck.CheckDotNet45())
+                    ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+#endif
 #if !_CONSOLE
                 _viewController = new MenuViewController(_controller);
 #endif
 
-                _controller.Start();
+            _controller.Start();
 
 #if !_CONSOLE
                 //Util.Utils.ReleaseMemory();

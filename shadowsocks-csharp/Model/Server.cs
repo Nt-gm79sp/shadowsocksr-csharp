@@ -19,10 +19,12 @@ namespace Shadowsocks.Model
         public IPAddress ip;
         public DateTime updateTime;
         public string host;
-        public bool isExpired(string host)
+        public bool force_expired;
+         public bool isExpired(string host)
         {
             if (updateTime == null) return true;
             if (this.host != host) return true;
+            if (force_expired && (DateTime.Now - updateTime).TotalMinutes > 1) return true;
             return (DateTime.Now - updateTime).TotalMinutes > 30;
         }
         public void UpdateDns(string host, IPAddress ip)
@@ -30,6 +32,7 @@ namespace Shadowsocks.Model
             updateTime = DateTime.Now;
             this.ip = new IPAddress(ip.GetAddressBytes());
             this.host = host;
+            force_expired = false;
         }
     }
 
@@ -104,8 +107,8 @@ namespace Shadowsocks.Model
     {
         public string id;
         public string server;
-        public int server_port;
-        public int server_udp_port;
+        public ushort server_port;
+        public ushort server_udp_port;
         public string password;
         public string method;
         public string protocol;
@@ -121,7 +124,6 @@ namespace Shadowsocks.Model
         private object obfsdata;
         private ServerSpeedLog serverSpeedLog = new ServerSpeedLog();
         private DnsBuffer dnsBuffer = new DnsBuffer();
-        private DnsBuffer dnsTargetBuffer = new DnsBuffer();
         private Connections Connections = new Connections();
         private static Server forwardServer = new Server();
 
@@ -131,7 +133,6 @@ namespace Shadowsocks.Model
             obfsdata = Server.obfsdata;
             serverSpeedLog = Server.serverSpeedLog;
             dnsBuffer = Server.dnsBuffer;
-            dnsTargetBuffer = Server.dnsTargetBuffer;
             Connections = Server.Connections;
             enable = Server.enable;
         }
@@ -160,11 +161,6 @@ namespace Shadowsocks.Model
         public DnsBuffer DnsBuffer()
         {
             return dnsBuffer;
-        }
-
-        public DnsBuffer DnsTargetBuffer()
-        {
-            return dnsTargetBuffer;
         }
 
         public ServerSpeedLog ServerSpeedLog()
@@ -386,7 +382,7 @@ namespace Shadowsocks.Model
                 throw new FormatException();
 
             server = match.Groups[1].Value;
-            server_port = int.Parse(match.Groups[2].Value);
+            server_port = ushort.Parse(match.Groups[2].Value);
             protocol = match.Groups[3].Value.Length == 0 ? "origin" : match.Groups[3].Value;
             protocol = protocol.Replace("_compatible", "");
             method = match.Groups[4].Value;
@@ -418,7 +414,7 @@ namespace Shadowsocks.Model
             }
             if (params_dict.ContainsKey("udpport"))
             {
-                server_udp_port = int.Parse(params_dict["udpport"]);
+                server_udp_port = ushort.Parse(params_dict["udpport"]);
             }
             if (!String.IsNullOrEmpty(force_group))
                 group = force_group;
@@ -441,7 +437,7 @@ namespace Shadowsocks.Model
             method = match.Groups["method"].Value;
             password = match.Groups["password"].Value;
             server = match.Groups["hostname"].Value;
-            server_port = int.Parse(match.Groups["port"].Value);
+            server_port = ushort.Parse(match.Groups["port"].Value);
             if (!String.IsNullOrEmpty(force_group))
                 group = force_group;
             else

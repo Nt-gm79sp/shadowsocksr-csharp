@@ -59,7 +59,6 @@ namespace Shadowsocks.View
         private LogForm logForm;
 
         private bool configfrom_open = false;
-        private List<EventParams> eventList = new List<EventParams>();
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern bool DestroyIcon(IntPtr handle);
@@ -532,14 +531,6 @@ namespace Shadowsocks.View
             configForm = null;
             configfrom_open = false;
             Util.Utils.ReleaseMemory();
-            if (eventList.Count > 0)
-            {
-                foreach (EventParams p in eventList)
-                {
-                    updateFreeNodeChecker_NewFreeNodeFound(p.sender, p.e);
-                }
-                eventList.Clear();
-            }
         }
 
         void settingsForm_FormClosed(object sender, FormClosedEventArgs e)

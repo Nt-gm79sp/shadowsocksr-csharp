@@ -82,7 +82,6 @@ namespace Shadowsocks.View
             lblTtl.Text = I18N.GetString("TTL");
             lblTimeout.Text = I18N.GetString(lblTimeout.Text);
 
-            chkAutoStartup.Text = I18N.GetString(chkAutoStartup.Text);
             chkSwitchAutoCloseAll.Text = I18N.GetString(chkSwitchAutoCloseAll.Text);
             chkBalance.Text = I18N.GetString(chkBalance.Text);
             chkAutoBan.Text = I18N.GetString("AutoBan");
@@ -140,10 +139,6 @@ namespace Shadowsocks.View
                 _modifiedConfiguration.localPort = localPort;
                 _modifiedConfiguration.reconnectTimes = nudReconnect.Text.Length == 0 ? 0 : int.Parse(nudReconnect.Text);
 
-                if (chkAutoStartup.Checked != AutoStartup.Check() && !AutoStartup.Set(chkAutoStartup.Checked))
-                {
-                    MessageBox.Show(I18N.GetString("Failed to update registry"));
-                }
                 _modifiedConfiguration.random = chkBalance.Checked;
                 _modifiedConfiguration.balanceAlgorithm = cmbBalance.SelectedIndex >= 0 && cmbBalance.SelectedIndex < _balanceIndexMap.Count ? _balanceIndexMap[cmbBalance.SelectedIndex] : "OneByOne";
                 _modifiedConfiguration.randomInGroup = chkBalanceInGroup.Checked;
@@ -181,7 +176,6 @@ namespace Shadowsocks.View
             nudProxyPort.Value = _modifiedConfiguration.localPort;
             nudReconnect.Value = _modifiedConfiguration.reconnectTimes;
 
-            chkAutoStartup.Checked = AutoStartup.Check();
             chkBalance.Checked = _modifiedConfiguration.random;
             int selectedIndex = 0;
             for (int i = 0; i < _balanceIndexMap.Count; ++i)

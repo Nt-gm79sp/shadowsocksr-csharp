@@ -102,7 +102,7 @@ Visual Studio Community 2017 is recommended.
 
 GPLv3
 
-BreakWa11 has the copyright of ShadowsocksR, which was forked from Shadowsocks by clowwindy.
+This fork  <-- forked from -- Akkariiin <-- forked from -- BreakWa11 <-- forked from -- clowwindy
 
 [SSR]:   https://github.com/shadowsocksrr/shadowsocksr-csharp/releases
 [SS]:    https://github.com/shadowsocks/shadowsocks-windows/

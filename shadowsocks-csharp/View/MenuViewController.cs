@@ -2,20 +2,29 @@
 using Shadowsocks.Model;
 using Shadowsocks.Properties;
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-
-using System.Threading;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace Shadowsocks.View
 {
+    public class EventParams
+    {
+        public object sender;
+        public EventArgs e;
+
+        public EventParams(object sender, EventArgs e)
+        {
+            this.sender = sender;
+            this.e = e;
+        }
+    }
+
     public class MenuViewController
     {
         // yes this is just a menu view controller
@@ -48,6 +57,12 @@ namespace Shadowsocks.View
         private ServerLogForm serverLogForm;
         private PortSettingsForm portMapForm;
         private LogForm logForm;
+
+        private bool configfrom_open = false;
+        private List<EventParams> eventList = new List<EventParams>();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        static extern bool DestroyIcon(IntPtr handle);
 
         public MenuViewController(ShadowsocksController controller)
         {
@@ -85,7 +100,7 @@ namespace Shadowsocks.View
 
         private void UpdateTrayIcon()
         {
-            int dpi;
+            int dpi = 96;
             using (Graphics graphics = Graphics.FromHwnd(IntPtr.Zero))
             {
                 dpi = (int)graphics.DpiX;
@@ -99,10 +114,10 @@ namespace Shadowsocks.View
 
             try
             {
-                using (Bitmap icon = new Bitmap("icon.png"))
-                {
-                    _notifyIcon.Icon = Icon.FromHandle(icon.GetHicon());
-                }
+                Bitmap icon = new Bitmap("icon.png");
+                Icon newIcon = Icon.FromHandle(icon.GetHicon());
+                icon.Dispose();
+                _notifyIcon.Icon = newIcon;
             }
             catch
             {
@@ -148,22 +163,25 @@ namespace Shadowsocks.View
                     mul_b = 0.5;
                 }
 
-                using (Bitmap iconCopy = new Bitmap(icon))
+                Bitmap iconCopy = new Bitmap(icon);
+                for (int x = 0; x < iconCopy.Width; x++)
                 {
-                    for (int x = 0; x < iconCopy.Width; x++)
+                    for (int y = 0; y < iconCopy.Height; y++)
                     {
-                        for (int y = 0; y < iconCopy.Height; y++)
-                        {
-                            Color color = icon.GetPixel(x, y);
-                            iconCopy.SetPixel(x, y,
-                                Color.FromArgb((byte)(color.A * mul_a),
-                                ((byte)(color.R * mul_r)),
-                                ((byte)(color.G * mul_g)),
-                                ((byte)(color.B * mul_b))));
-                        }
+                        Color color = icon.GetPixel(x, y);
+                        iconCopy.SetPixel(x, y,
+
+                            Color.FromArgb((byte)(color.A * mul_a),
+                            ((byte)(color.R * mul_r)),
+                            ((byte)(color.G * mul_g)),
+                            ((byte)(color.B * mul_b))));
                     }
-                    _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
                 }
+                Icon newIcon = Icon.FromHandle(iconCopy.GetHicon());
+                icon.Dispose();
+                iconCopy.Dispose();
+
+                _notifyIcon.Icon = newIcon;
             }
 
             // we want to show more details but notify icon title is limited to 63 characters
@@ -397,6 +415,7 @@ namespace Shadowsocks.View
             }
             else
             {
+                configfrom_open = true;
                 configForm = new ConfigForm(controller, addNode ? -1 : -2);
                 configForm.Show();
                 configForm.Activate();
@@ -413,6 +432,7 @@ namespace Shadowsocks.View
             }
             else
             {
+                configfrom_open = true;
                 configForm = new ConfigForm(controller, index);
                 configForm.Show();
                 configForm.Activate();
@@ -503,7 +523,16 @@ namespace Shadowsocks.View
         void configForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             configForm = null;
+            configfrom_open = false;
             Util.Utils.ReleaseMemory();
+            if (eventList.Count > 0)
+            {
+                foreach (EventParams p in eventList)
+                {
+                    updateFreeNodeChecker_NewFreeNodeFound(p.sender, p.e);
+                }
+                eventList.Clear();
+            }
         }
 
         void settingsForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -756,6 +785,12 @@ namespace Shadowsocks.View
 
         private void AServerItem_Click(object sender, EventArgs e)
         {
+            Configuration config = controller.GetCurrentConfiguration();
+            Console.WriteLine("config.checkSwitchAutoCloseAll:" + config.checkSwitchAutoCloseAll);
+            if (config.checkSwitchAutoCloseAll)
+            {
+                controller.DisconnectAllConnections();
+            }
             MenuItem item = (MenuItem)sender;
             controller.SelectServerIndex((int)item.Tag);
         }
@@ -777,12 +812,7 @@ namespace Shadowsocks.View
 
         private void DisconnectCurrent_Click(object sender, EventArgs e)
         {
-            Configuration config = controller.GetCurrentConfiguration();
-            for (int id = 0; id < config.configs.Count; ++id)
-            {
-                Server server = config.configs[id];
-                server.GetConnections().CloseAll();
-            }
+            controller.DisconnectAllConnections();
         }
 
         private void URL_Split(string text, ref List<string> out_urls)

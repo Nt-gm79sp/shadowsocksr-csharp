@@ -141,26 +141,33 @@ namespace Shadowsocks.View
                 double mul_a = 1.0, mul_r = 1.0, mul_g = 1.0, mul_b = 1.0;
                 if (!enabled)
                 {
-                    // gray
-                    mul_r = 0.75;
-                    mul_g = 0.75;
-                    mul_b = 0.75;
+                    mul_g = 0.4;
+                    // // gray
+                    // mul_r = 0.75;
+                    // mul_g = 0.75;
+                    // mul_b = 0.75;
                 }
-                else if (global)
+                else if (!global)
                 {
-                    // blue
-                    mul_r = 0.1;
-                    mul_g = 0.5;
-                    mul_b = 0.75;
+                    mul_b = 0.4;
+                    mul_g = 0.8;
                 }
+                // else if (global)
+                // {
+                //     // blue
+                //     mul_r = 0.1;
+                //     mul_g = 0.5;
+                //     mul_b = 0.75;
+                // }
                 if (!proxyGlobal)
                 {
                     mul_g = (mul_g * 1.25) % 1.0;
                 }
                 if (!random)
                 {
-                    mul_r = 0.5;
-                    mul_b = 0.5;
+                    mul_r = 0.4;
+                    // mul_r = 0.5;
+                    // mul_b = 0.5;
                 }
 
                 Bitmap iconCopy = new Bitmap(icon);
